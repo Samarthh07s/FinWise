@@ -1,0 +1,97 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="dashboard-header">
+        <div class="dashboard-title">
+            <h1>🎯 Savings Goals</h1>
+            <p>Track your progress towards financial goals</p>
+        </div>
+        <div class="header-buttons">
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Create New Goal</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="create_goal" value="1">
+            <div class="form-group">
+                <label class="form-label">Goal Name</label>
+                {{ form.name }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">Emoji</label>
+                {{ form.emoji }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">Target Amount</label>
+                {{ form.target_amount }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">Monthly Contribution</label>
+                {{ form.monthly_contribution }}
+            </div>
+            <div class="form-group">
+                <label class="form-label">Target Date</label>
+                {{ form.target_date }}
+            </div>
+            <button type="submit" class="btn btn-primary">Create Goal</button>
+        </form>
+    </div>
+
+    {% for goal in goals %}
+    <div class="goal-card">
+        <div class="goal-header">
+            <div class="goal-name">
+                <span class="goal-emoji">{{ goal.emoji }}</span>
+                <h3>{{ goal.name }}</h3>
+            </div>
+            {% if goal.completed %}
+            <span class="badge-success">✓ Completed</span>
+            {% endif %}
+        </div>
+        
+        <div class="goal-amount">
+            <span class="current">₹{{ goal.current_amount }}</span> / ₹{{ goal.target_amount }}
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ goal.progress_percentage }}%"></div>
+        </div>
+        
+        <div class="goal-footer">
+            <div class="goal-info">
+                <p>Monthly: ₹{{ goal.monthly_contribution }}</p>
+                <p>Progress: {{ goal.progress_percentage }}%</p>
+            </div>
+            <div class="goal-actions">
+                <form method="post" action="{% url 'add_money_to_goal' goal.id %}" style="display:inline">
+                    {% csrf_token %}
+                    <input type="number" name="amount" step="0.01" placeholder="Amount" style="width:100px;padding:8px;border-radius:6px;border:1px solid #2d3748;background:#1a1f2e;color:#fff" required>
+                    <button type="submit" class="btn btn-primary btn-sm">Add Money</button>
+                </form>
+                <a href="{% url 'delete_goal' goal.id %}" class="btn btn-danger btn-sm" 
+                   onclick="return confirm('Delete this goal?')">Delete</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card">
+        <p style="text-align:center;color:#9ca3af">No savings goals yet. Create one above!</p>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+.badge-success {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+</style>
+{% endblock %}

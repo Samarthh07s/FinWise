@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinWise - AI Financial Management</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #0f1419; 
+            color: #e5e7eb; 
+            min-height: 100vh;
+        }
+        
+        /* Navigation */
+        .nav { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            background: rgba(15, 20, 25, 0.95); 
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(14, 165, 233, 0.2); 
+            padding: 20px 40px; 
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { 
+            font-size: 28px; 
+            font-weight: 700; 
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: #9ca3af; text-decoration: none; font-weight: 500; }
+        .nav-links a:hover { color: #0ea5e9; }
+        .nav-btns { display: flex; gap: 15px; }
+        .btn { 
+            padding: 10px 24px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 600;
+        }
+        .btn-login { color: #e5e7eb; }
+        .btn-signup { 
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6); 
+            color: white;
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero { 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            text-align: center; 
+            padding: 120px 40px 80px;
+        }
+        .hero-content { max-width: 1000px; }
+        .badge { 
+            display: inline-block; 
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3); 
+            padding: 10px 20px; 
+            border-radius: 30px;
+            color: #0ea5e9; 
+            font-size: 14px; 
+            font-weight: 600; 
+            margin-bottom: 30px;
+        }
+        .hero h1 { 
+            font-size: 64px; 
+            font-weight: 800; 
+            margin-bottom: 24px; 
+            line-height: 1.2;
+            color: #f8fafc;
+        }
+        .gradient { 
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p { 
+            font-size: 20px; 
+            color: #9ca3af; 
+            margin-bottom: 40px; 
+            line-height: 1.6;
+        }
+        .hero-btns { 
+            display: flex; 
+            gap: 20px; 
+            justify-content: center; 
+            margin-bottom: 60px;
+        }
+        .btn-large { 
+            padding: 18px 48px; 
+            font-size: 18px; 
+            border-radius: 12px;
+        }
+        .btn-primary { 
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            color: white;
+            box-shadow: 0 0 40px rgba(14, 165, 233, 0.4);
+        }
+        .btn-secondary { 
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3); 
+            color: #a78bfa;
+        }
+        
+        /* Stats */
+        .stats { 
+            display: flex; 
+            justify-content: center; 
+            gap: 60px; 
+            margin-bottom: 80px;
+        }
+        .stat { text-align: center; }
+        .stat-num { 
+            font-size: 48px; 
+            font-weight: 700;
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label { color: #6b7280; font-size: 14px; margin-top: 8px; }
+        
+        /* Features Section */
+        .section { padding: 100px 40px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .section-title { 
+            text-align: center; 
+            font-size: 48px; 
+            font-weight: 700; 
+            margin-bottom: 60px;
+            color: #f8fafc;
+        }
+        .features-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px;
+        }
+        .feature-card { 
+            background: rgba(26, 31, 46, 0.6);
+            border: 1px solid rgba(45, 55, 72, 0.8); 
+            padding: 40px; 
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        .feature-card:hover { 
+            transform: translateY(-5px);
+            border-color: #0ea5e9;
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.2);
+        }
+        .feature-icon { 
+            font-size: 48px; 
+            margin-bottom: 20px;
+        }
+        .feature-card h3 { 
+            font-size: 22px; 
+            margin-bottom: 12px; 
+            color: #f8fafc;
+        }
+        .feature-card p { 
+            color: #9ca3af; 
+            line-height: 1.6; 
+            margin-bottom: 16px;
+        }
+        .feature-list { 
+            list-style: none; 
+            padding: 0;
+        }
+        .feature-list li { 
+            color: #d1d5db; 
+            margin-bottom: 8px; 
+            font-size: 14px;
+        }
+        
+        /* How It Works */
+        .steps { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .step-card { 
+            background: rgba(26, 31, 46, 0.8);
+            border: 1px solid rgba(14, 165, 233, 0.3); 
+            padding: 48px 32px; 
+            text-align: center;
+            border-radius: 20px;
+            flex: 1;
+            position: relative;
+        }
+        .step-num { 
+            position: absolute; 
+            top: -20px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px; 
+            height: 40px;
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            color: white; 
+            border-radius: 50%;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-weight: 700;
+        }
+        .step-icon { font-size: 48px; margin-bottom: 20px; }
+        .step-card h3 { 
+            font-size: 24px; 
+            color: #f8fafc; 
+            margin-bottom: 12px;
+        }
+        .step-card p { color: #9ca3af; line-height: 1.6; }
+        .arrow { font-size: 32px; color: #0ea5e9; }
+        
+        /* Pricing */
+        .pricing-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .pricing-card { 
+            background: rgba(26, 31, 46, 0.8);
+            border: 1px solid rgba(45, 55, 72, 0.8); 
+            padding: 48px 40px;
+            border-radius: 20px;
+            position: relative;
+        }
+        .pricing-card.featured { 
+            border-color: #0ea5e9;
+            box-shadow: 0 20px 60px rgba(14, 165, 233, 0.3);
+        }
+        .featured-badge { 
+            position: absolute; 
+            top: -16px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            color: white; 
+            padding: 8px 24px; 
+            border-radius: 20px;
+            font-size: 13px; 
+            font-weight: 600;
+        }
+        .pricing-header { text-align: center; margin-bottom: 32px; }
+        .pricing-header h3 { 
+            font-size: 24px; 
+            color: #f8fafc; 
+            margin-bottom: 16px;
+        }
+        .price { 
+            font-size: 56px; 
+            font-weight: 700;
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .period { font-size: 18px; color: #9ca3af; }
+        .pricing-features { 
+            list-style: none; 
+            padding: 0; 
+            margin-bottom: 32px;
+        }
+        .pricing-features li { 
+            color: #d1d5db; 
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(45, 55, 72, 0.5);
+        }
+        .btn-pricing { 
+            display: block; 
+            width: 100%; 
+            padding: 16px;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3); 
+            color: #0ea5e9;
+            text-align: center; 
+            text-decoration: none; 
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .btn-pricing.primary { 
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            border: none; 
+            color: white;
+        }
+        
+        /* CTA */
+        .cta { 
+            padding: 120px 40px; 
+            text-align: center;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+        }
+        .cta h2 { 
+            font-size: 56px; 
+            font-weight: 700; 
+            margin-bottom: 24px;
+            color: #f8fafc;
+        }
+        .cta p { 
+            font-size: 20px; 
+            color: #9ca3af; 
+            margin-bottom: 48px;
+        }
+        .cta-note { color: #6b7280; font-size: 14px; margin-top: 20px; }
+        
+        /* Footer */
+        .footer { 
+            background: rgba(10, 14, 25, 0.95);
+            border-top: 1px solid rgba(14, 165, 233, 0.2); 
+            padding: 80px 40px 40px;
+        }
+        .footer-grid { 
+            max-width: 1400px; 
+            margin: 0 auto;
+            display: grid; 
+            grid-template-columns: 2fr 1fr 1fr 1fr; 
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+        .footer-col h4 { color: #f8fafc; margin-bottom: 20px; }
+        .footer-col ul { list-style: none; padding: 0; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { 
+            color: #9ca3af; 
+            text-decoration: none;
+        }
+        .footer-col p { color: #9ca3af; line-height: 1.8; }
+        .footer-bottom { 
+            text-align: center; 
+            padding-top: 40px;
+            border-top: 1px solid rgba(45, 55, 72, 0.5); 
+            color: #6b7280;
+        }
+        
+        @media (max-width: 768px) {
+            .nav { flex-direction: column; padding: 15px; }
+            .nav-links, .nav-btns { display: none; }
+            .hero h1 { font-size: 42px; }
+            .stats { flex-direction: column; gap: 40px; }
+            .features-grid, .steps, .pricing-grid { grid-template-columns: 1fr; }
+            .arrow { transform: rotate(90deg); }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<div class="nav">
+    <div class="logo">💰 FinWise</div>
+    <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How It Works</a>
+        <a href="#pricing">Pricing</a>
+    </div>
+    <div class="nav-btns">
+        <a href="/login/" class="btn btn-login">Login</a>
+        <a href="/register/" class="btn btn-signup">Get Started</a>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="badge">✨ AI-Powered Financial Intelligence</div>
+        <h1>Take Control of Your <span class="gradient">Financial Future</span></h1>
+        <p>FinWise combines cutting-edge AI with intuitive design to help you track expenses, predict spending, and achieve your financial goals.</p>
+        <div class="hero-btns">
+            <a href="/register/" class="btn btn-primary btn-large">Start Free Today</a>
+            <a href="#features" class="btn btn-secondary btn-large">Learn More</a>
+        </div>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-num">50K+</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">₹100M+</div>
+                <div class="stat-label">Tracked</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">95%</div>
+                <div class="stat-label">Satisfaction</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">24/7</div>
+                <div class="stat-label">AI Monitoring</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="section">
+    <div class="container">
+        <h2 class="section-title">Everything You Need to Succeed</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI Auto-Categorization</h3>
+                <p>Smart AI automatically categorizes your expenses. No manual work needed!</p>
+                <ul class="feature-list">
+                    <li>✨ 50+ keywords recognized</li>
+                    <li>📊 8 smart categories</li>
+                    <li>⚡ Instant classification</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <h3>Daily AI Summary</h3>
+                <p>Get personalized daily insights comparing your spending with averages.</p>
+                <ul class="feature-list">
+                    <li>🎯 Daily comparisons</li>
+                    <li>📈 Trend analysis</li>
+                    <li>💡 Smart suggestions</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚠️</div>
+                <h3>Soft Budget Warnings</h3>
+                <p>Gentle alerts when approaching budget limits. Stay informed without restrictions.</p>
+                <ul class="feature-list">
+                    <li>💡 75% gentle nudge</li>
+                    <li>⚠️ 85% stronger alert</li>
+                    <li>🔴 95% critical warning</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📖</div>
+                <h3>Monthly Financial Story</h3>
+                <p>At month-end, receive a comprehensive narrative of your financial journey.</p>
+                <ul class="feature-list">
+                    <li>📊 Trend comparisons</li>
+                    <li>💰 Savings summary</li>
+                    <li>🎯 Category analysis</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💯</div>
+                <h3>Financial Health Score</h3>
+                <p>Track your wellness with a 0-100 score based on multiple factors.</p>
+                <ul class="feature-list">
+                    <li>🏆 A-D letter grades</li>
+                    <li>📊 4 key metrics</li>
+                    <li>💡 Actionable tips</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Savings Goals Tracker</h3>
+                <p>Set and track multiple savings goals with visual progress bars.</p>
+                <ul class="feature-list">
+                    <li>🏍️ Multiple goals</li>
+                    <li>📈 Progress tracking</li>
+                    <li>🎉 Achievement alerts</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>Expense Forecasting</h3>
+                <p>AI predicts next month's expenses based on your patterns.</p>
+                <ul class="feature-list">
+                    <li>🔮 30-day forecasts</li>
+                    <li>📊 Category breakdown</li>
+                    <li>📉 Trend indicators</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Anomaly Detection</h3>
+                <p>Automatically detects unusual spending patterns and potential fraud.</p>
+                <ul class="feature-list">
+                    <li>🔍 Real-time scanning</li>
+                    <li>🚨 Instant alerts</li>
+                    <li>📊 Pattern analysis</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💡</div>
+                <h3>Personalized Advice</h3>
+                <p>Get AI-powered recommendations tailored to your spending habits.</p>
+                <ul class="feature-list">
+                    <li>🎯 Custom tips</li>
+                    <li>💰 Savings opportunities</li>
+                    <li>📈 Growth strategies</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section id="how" class="section" style="background: rgba(14, 165, 233, 0.05);">
+    <div class="container">
+        <h2 class="section-title">How FinWise Works</h2>
+        <div class="steps">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <div class="step-icon">📝</div>
+                <h3>Create Account</h3>
+                <p>Sign up in 30 seconds with just your email. No credit card required.</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <div class="step-icon">💰</div>
+                <h3>Add Expenses</h3>
+                <p>Enter titles like "Pizza from Dominos" and let AI handle categorization.</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <div class="step-icon">📊</div>
+                <h3>Get Insights</h3>
+                <p>Receive daily summaries, budget alerts, and personalized advice.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing" class="section">
+    <div class="container">
+        <h2 class="section-title">Simple, Transparent Pricing</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Free</h3>
+                    <div class="price">₹0<span class="period">/month</span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li>✅ Unlimited expenses</li>
+                    <li>✅ AI auto-categorization</li>
+                    <li>✅ Daily AI summary</li>
+                    <li>✅ 3 savings goals</li>
+                    <li>✅ Basic analytics</li>
+                </ul>
+                <a href="/register/" class="btn-pricing">Get Started Free</a>
+            </div>
+            
+            <div class="pricing-card featured">
+                <div class="featured-badge">Most Popular</div>
+                <div class="pricing-header">
+                    <h3>Pro</h3>
+                    <div class="price">₹299<span class="period">/month</span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li>✅ Everything in Free</li>
+                    <li>✅ Unlimited goals</li>
+                    <li>✅ Budget warnings</li>
+                    <li>✅ Monthly story</li>
+                    <li>✅ Health score</li>
+                    <li>✅ Advanced forecasting</li>
+                </ul>
+                <a href="/register/" class="btn-pricing primary">Start Free Trial</a>
+            </div>
+            
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Enterprise</h3>
+                    <div class="price">Custom</div>
+                </div>
+                <ul class="pricing-features">
+                    <li>✅ Everything in Pro</li>
+                    <li>✅ Team management</li>
+                    <li>✅ Custom integrations</li>
+                    <li>✅ API access</li>
+                    <li>✅ Dedicated support</li>
+                </ul>
+                <a href="#contact" class="btn-pricing">Contact Sales</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <h2>Ready to Transform Your Finances?</h2>
+    <p>Join 50,000+ users saving smarter with FinWise AI</p>
+    <div class="hero-btns">
+        <a href="/register/" class="btn btn-primary btn-large">Start Free Today</a>
+        <a href="/login/" class="btn btn-secondary btn-large">Sign In</a>
+    </div>
+    <p class="cta-note">No credit card required • Free forever • Cancel anytime</p>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="logo" style="margin-bottom:20px">💰 FinWise</div>
+            <p>AI-powered financial management for everyone. Track, analyze, and optimize your spending.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Product</h4>
+            <ul>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="/register/">Get Started</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+                <li><a href="#privacy">Privacy</a></li>
+                <li><a href="#terms">Terms</a></li>
+                <li><a href="#security">Security</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 FinWise. All rights reserved. Built with ❤️ for smarter financial management.</p>
+    </div>
+</footer>
+
+</body>
+</html>

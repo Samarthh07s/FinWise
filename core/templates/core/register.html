@@ -1,0 +1,68 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-logo">
+            <h1>💰 FinWise</h1>
+        </div>
+        
+        <div class="auth-header">
+            <h2>Create Account</h2>
+            <p>Join FinWise and take control of your finances</p>
+        </div>
+        
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                {{ form.username }}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                {{ form.email }}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                {{ form.password1 }}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Confirm Password</label>
+                {{ form.password2 }}
+            </div>
+            
+            <button type="submit" class="btn-neon">
+                Create Account
+            </button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{% url 'login' %}" class="auth-link">Sign in</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .auth-form input[type="text"],
+    .auth-form input[type="email"],
+    .auth-form input[type="password"] {
+        width: 100%;
+        padding: 14px 16px;
+        background: #1a1f2e;
+        border: 1px solid #2d3748;
+        border-radius: 10px;
+        color: #f8fafc;
+        font-size: 15px;
+        transition: all 0.3s;
+    }
+    .auth-form input:focus {
+        outline: none;
+        border-color: #0ea5e9;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1), 0 0 20px rgba(14, 165, 233, 0.3);
+    }
+</style>
+{% endblock %}
