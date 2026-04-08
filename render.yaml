@@ -1,10 +1,11 @@
 services:
   - type: web
     name: finwise
-    env: python
+    runtime: python
     plan: free
     autoDeploy: true
-    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    preDeployCommand: python manage.py migrate
     startCommand: gunicorn finwise.wsgi:application
     envVars:
       - key: DJANGO_DEBUG
